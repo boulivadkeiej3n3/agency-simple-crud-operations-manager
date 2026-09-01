@@ -16,7 +16,7 @@ const SupabaseConfigs = {
 async function sendToDB(_data){
  try{
 
- return await fetch('https://wnwxzzuaiwxvmrvfgjto.supabase.co/functions/v1/hyper-api' ,{
+ return await fetch(DBConfig.endpoints.CRUDTasks ,{
   method:"POST",
   /******** VERY DANGEROUS AND ONLY CURRENT UNTIL EXTERNAL SERVER ***************/
   headers:{
@@ -34,7 +34,7 @@ async function sendToDB(_data){
 async function fetchDBTasks(_count=30,_config={}){
  //Fetch the Latest number of '_count' of Tasks and return it back;
   try{
-    const DBResponse = await fetch("https://wnwxzzuaiwxvmrvfgjto.supabase.co/functions/v1/clever-action", {
+    const DBResponse = await fetch(DBConfig.endpoints.fetchDBTasks, {
     ...SupabaseConfigs,
     body:JSON.stringify({
       count:_count
