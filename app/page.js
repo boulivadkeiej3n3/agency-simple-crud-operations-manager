@@ -13,7 +13,7 @@ let [currentTaskCount,setCurrentTaskCount]  =[null,null]
 let [CRUDFormVisibility, setCRUDFormVisibility ]  =[null,null]
 let [CRUDFormStatus, setCRUDFormStatus]    =[null,null]
 let [DashboardStatus, setDashboardStatus]  =[null, null];
-let TaskPool;
+let TaskPool =[];
 let Window
 // const sessionStorage = Window.sessionStorage
 export let HomepageContext = 22;
@@ -181,12 +181,14 @@ export default function Dashboard() {
   Window = window;
   if("outdated,fetch-error".match(DashboardStatus)){
     console.log("Dashboard is Updating...")
-    updateLocalDBFromSupabase(12)
-  } 
+    updateLocalDBFromSupabase()
+  }
+ TaskPool        = ((new Array(Window.sessionStorage.length).fill("")).map((_,_index)=>JSON.parse(Window.sessionStorage.getItem((Window.sessionStorage.key(_index)) ))) );
+ setCurrentTaskCount(TaskPool.length);
  },[DashboardStatus])
 /****************************/
       HomepageContext = createContext();
-      TaskPool        = ((new Array(Window.sessionStorage.length).fill("")).map((_,_index)=>JSON.parse(Window.sessionStorage.getItem((Window.sessionStorage.key(_index)) ))) );
+
       console.log("From Dashboard" , TaskPool);
    // [/**TaskPool **/, reRenderTaskPool]          = useReducer((_placeholder)=>{console.log(_placeholder," This useReducer is CALLED"); return _placeholder+1}, 0);
    // TaskPool                                     = useRef([]);
@@ -210,15 +212,17 @@ export default function Dashboard() {
          [currentTaskCount,setCurrentTaskCount]    = useState(TaskPool.length);
          currentEditedTaskID                        = useRef(null);
    const [_,updateLocalDBFromSupabase]  = useReducer((x)=>{
-    console.log("asdsad")
+      if("loading,updated".match(DashboardStatus)) return;
+     console.log(DashboardStatus)
+
       //[1]- BEFORE UPDATE UI-EFFECTS:
         setDashboardStatus("loading");
        fetchDBTasks().then(OnlineData=>{
+          setDashboardStatus("updated");
             TaskPool = OnlineData;
             updateTaskPool();
             console.log("Fetchis called",OnlineData)
         //[3.1]- After UPDATE UI -EFFECTS (SUCCESS)
-        setDashboardStatus("updated");
         throwUINotification("Local Databsae Updated Succesfully", "success")
 
        }).catch(e=>{
