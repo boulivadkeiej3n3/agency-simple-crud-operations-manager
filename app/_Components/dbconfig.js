@@ -1,6 +1,10 @@
 export default{
- authorization: `Bearer sb_publishable_XaiKjO75B12_BUlCt9bBjQ_jKtq21_H`,
- apikey:`sb_publishable_XaiKjO75B12_BUlCt9bBjQ_jKtq21_H`,
+ authorization: `WRITE_YOUR_SUPABASE_AUTHORIZATION_KEY_HERE`,
+ apikey:`WRITE_YOUR_SUPABASE_API_KEY_HERE`,
+ endpoints:{
+ CRUDTasks: `WRITE_YOUR_CRUDTasks_SERVER_CONNECTION_URL_HERE`,
+ fetchDBTasks: `WRITE_YOUR_fetchDBTasks_SERVER_CONNECTION_URL_HERE`
+ }
  nameExchangeJStoDB:{
  	"taskName":       "TASK_NAME",
  	"taskStatus":     "TASK_STATUS",
