@@ -1,26 +1,65 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+* button{
+ cursor:pointer;
 }
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+form fieldset[disabled]{
+  color:black;
+  .task-form-loading{
+     input,textarea,select{
+          background: #969696;
+          color:#c9c9c9;
+     }
+     *::placeholder {
+       color:#a8a8a7;
+      }
+    
+  } 
 }
+.task-component-status-element{
+ font-family: Courier;
+ font-weight: bold;
+  &.task-ongoing{
+    background: #56d9e8;
+  }
+  &.task-completed{
+    background: #88cc2f;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  }
+  &.task-deleted{
+
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+select#task-status{
+  & option{
+    background: white;
+  }
+  &:has(option[value="Completed"]:checked){
+            background: #e6fa07;
+
+  }
+  &:has(option[value="Ongoing"]:checked){
+        background: #07fab9;
+  }
+
+  &:has(option[value="Paused"]:checked){
+        background: gold;
+  }
+  &.task-status-select__disabled{
+     color:#999790 !important; 
+      background: #303030 !important;
+  }
+}
+
+li[name="task-component"]{
+  &.under-deletion{
+    border: 1px red solid;
+      background: #303030 !important;
+    & *{
+      color:#999790 !important; 
+      background: #303030 !important;
+    }
+  }
 }
