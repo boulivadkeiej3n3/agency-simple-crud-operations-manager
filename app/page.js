@@ -14,7 +14,8 @@ let [CRUDFormVisibility, setCRUDFormVisibility ]  =[null,null]
 let [CRUDFormStatus, setCRUDFormStatus]    =[null,null]
 let [DashboardStatus, setDashboardStatus]  =[null, null];
 let TaskPool;
-// const sessionStorage = window.sessionStorage
+let Window
+// const sessionStorage = Window.sessionStorage
 export let HomepageContext = 22;
 export let currentEditedTaskID;
 {
@@ -164,15 +165,28 @@ function TaskListParent(){
  }
 function updateTaskPool(newTaskPool=TaskPool){
   //Clear the sessionStorage then put the newly fetched data
-  window.sessionStorage.clear();
+  Window.sessionStorage.clear();
   Object.values(newTaskPool).map(TaskDefinition=>{
-   window.sessionStorage.setItem(TaskDefinition.TASK_ID,JSON.stringify(TaskDefinition));
+   Window.sessionStorage.setItem(TaskDefinition.TASK_ID,JSON.stringify(TaskDefinition));
   })
 }
 /***************************************/
 export default function Dashboard() {
+
+
+
+  /******* INITIAL ************/
+
+ useEffect(()=>{
+  Window = window;
+  if("outdated,fetch-error".match(DashboardStatus)){
+    console.log("Dashboard is Updating...")
+    updateLocalDBFromSupabase(12)
+  } 
+ },[DashboardStatus])
+/****************************/
       HomepageContext = createContext();
-      TaskPool        = ((new Array(window.sessionStorage.length).fill("")).map((_,_index)=>JSON.parse(window.sessionStorage.getItem((window.sessionStorage.key(_index)) ))) );
+      TaskPool        = ((new Array(Window.sessionStorage.length).fill("")).map((_,_index)=>JSON.parse(Window.sessionStorage.getItem((Window.sessionStorage.key(_index)) ))) );
       console.log("From Dashboard" , TaskPool);
    // [/**TaskPool **/, reRenderTaskPool]          = useReducer((_placeholder)=>{console.log(_placeholder," This useReducer is CALLED"); return _placeholder+1}, 0);
    // TaskPool                                     = useRef([]);
@@ -218,15 +232,7 @@ export default function Dashboard() {
 
  const ComponentStates ={CRUDFormStatus, setCRUDFormStatus, CRUDFormVisibility,setCRUDFormVisibility};
   // console.log(HomepageContext,ComponentStates)
-/******* INITIAL ************/
 
- useEffect(()=>{
-  if("outdated,fetch-error".match(DashboardStatus)){
-    console.log("Dashboard is Updating...")
-    updateLocalDBFromSupabase(12)
-  } 
- },[DashboardStatus])
-/****************************/
  
 
   return (
